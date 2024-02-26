@@ -2,3 +2,4 @@ notebooks/kaggle.json
 datasets/
 models/03-cnn_xeno_canto_arg-10ep-3s_audio
 models/03-cnn_xeno_canto_arg-30ep
+models/04-cnn_xeno_canto_arg-25_classes-30ep
