@@ -152,11 +152,12 @@ def download_audio_data(
                 sleep(1)
                 spinner.next()
 
+    print("Finished downloading audio files!")
+
 
 MIN_RECORDED_TIME = 400
 SPECIES_COUNT = 40
 SAMPLE_RATE = 16000
-WINDOW_LENGTH = 3
 
 download_database_metadata()
 
