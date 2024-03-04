@@ -134,22 +134,22 @@ def download_audio_data(
             if (downloaded_time_per_species[species]) <= MIN_RECORDED_TIME:
                 filename = f'{species}-{id}.flac'
 
-                # TODO: optimize io.BytesIO
+                # TODO: find a way to optimize BytesIO
                 try:
                     with requests.get(url, stream=True) as f:
                         content = io.BytesIO(f.content)
                         y, sr = li.load(content, sr=sr, mono=True)
-                        content.close
+                        content.close()
                         sf.write(
                             os.path.join(audio_location, species, filename), y, sr, format='flac', subtype='PCM_24'
                         )
 
                     downloaded_time_per_species[species] += length
                 except:
-                    print(f'{url} could not be decoded :(')
+                    pass
 
                 # Wait required time between recordings
-                sleep(1.1)
+                sleep(1)
                 spinner.next()
 
 
