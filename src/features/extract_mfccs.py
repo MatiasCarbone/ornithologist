@@ -61,9 +61,9 @@ def preprocess_audio_dataset(
 
 
 SAMPLE_RATE = 16000
-WINDOW_LENGTH = 3
+WINDOW_LENGTH = 1
 
 audio_path = './datasets/xeno_canto_birds/audio/'
 json_path = './datasets/xeno_canto_birds/mfccs.json'
 
-preprocess_audio_dataset(audio_path, json_path=json_path, window_length=3)
+preprocess_audio_dataset(audio_path, json_path=json_path, window_length=WINDOW_LENGTH)
