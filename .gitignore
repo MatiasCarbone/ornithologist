@@ -5,3 +5,4 @@ models/03-cnn_xeno_canto_arg-30ep
 models/04-cnn_xeno_canto_arg-25_classes-30ep
 src/test.ipynb
 src/features/__pycache__/preprocessing_functions.cpython-39.pyc
+.vscode/settings.json
