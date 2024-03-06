@@ -1,4 +1,5 @@
 import os, sys
+from datetime import timedelta
 import json
 import numpy as np
 from tensorflow import keras
@@ -38,7 +39,7 @@ class _Bird_Classifier(object):
             raise ValueError('Invalid file extension!')
 
         # Load audio file
-        y, sr = li.load(audio_sample_path, sr=self.sr, mono=True)
+        y, _ = li.load(audio_sample_path, sr=self.sr, mono=True)
         # Apply high-pass filter
         y = apply_butter_highpass(data=y, cutoff=hp, fs=self.sr, order=5)
 
@@ -50,6 +51,11 @@ class _Bird_Classifier(object):
         windows = split_audio_signal(y, target_length=self.length, samplerate=self.sr)
 
         return windows, divisions
+
+    def samples_to_time(self, samples):
+        ms = int(samples / 16)
+        td = timedelta(milliseconds=ms)
+        return str(td)[:-3]
 
     def predict(self, audio_sample_path):
         windows, divisions = self.preprocess(audio_sample_path)
@@ -65,7 +71,16 @@ class _Bird_Classifier(object):
             label_str = self.label_map[label]
             probability = round(prob_dist[label] * 100, 2)
 
-            predictions.append((label, label_str, probability))
+            t0 = self.samples_to_time(division[0])
+            t1 = self.samples_to_time(division[1])
+
+            dict = {
+                'label_code': label,
+                'species': label_str,
+                'probability': probability,
+                'time_section': (t0, t1),
+            }
+            predictions.append(dict)
 
         return predictions
 
