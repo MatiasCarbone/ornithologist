@@ -29,7 +29,7 @@ def remove_silent_sections(signal, thresh=20, hop=2048, return_splits=False):
         stripped_audio.extend(split)
 
     if return_splits:
-        return np.asarray(stripped_audio), split
+        return np.asarray(stripped_audio), splits
     else:
         return np.asarray(stripped_audio)
 
