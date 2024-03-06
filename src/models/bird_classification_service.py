@@ -54,6 +54,21 @@ class _Bird_Classifier(object):
     def predict(self, audio_sample_path):
         windows, divisions = self.preprocess(audio_sample_path)
 
+        predictions = []
+        for window, division in zip(windows, divisions):
+            mfccs = li.feature.mfcc(y=window, sr=self.sr, n_mfcc=26, hop_length=512, n_fft=2048)
+            mfccs = mfccs.transpose()
+            mfccs = mfccs[np.newaxis, ..., np.newaxis]
+
+            prob_dist = self.model.predict(mfccs, verbose=0).flatten()
+            label = np.argmax(prob_dist)
+            label_str = self.label_map[label]
+            probability = round(prob_dist[label] * 100, 2)
+
+            predictions.append((label, label_str, probability))
+
+        return predictions
+
 
 # This constants must match the parameter used for preprocessing MFCCs for training
 SAMPLE_RATE = 16000
@@ -70,4 +85,4 @@ classifier = _Bird_Classifier(
     window_length=WINDOW_LENGTH,
 )
 
-classifier.predict(AUDIO_FILE_PATH)
+predictions = classifier.predict(AUDIO_FILE_PATH)
