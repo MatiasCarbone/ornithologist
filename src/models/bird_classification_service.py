@@ -87,6 +87,9 @@ class _Bird_Classifier(object):
 
         return predictions
 
+    def get_categories(self):
+        return self.label_map
+
 
 # This constants must match the parameter used for preprocessing MFCCs for training
 SAMPLE_RATE = 16000
