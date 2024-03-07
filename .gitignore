@@ -6,3 +6,4 @@ models/04-cnn_xeno_canto_arg-25_classes-30ep
 src/test.ipynb
 .vscode/settings.json
 src/models/__pycache__
+src/features/__pycache__

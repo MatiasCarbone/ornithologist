@@ -1,5 +1,5 @@
-from flask import Flask, request
-import random, string, json, os
+from flask import Flask, request, jsonify
+import random, string, os, json
 from models.bird_classification_service import _Bird_Classifier
 
 # This constants must match the parameter used for preprocessing MFCCs for training
@@ -31,7 +31,7 @@ def predict():
     """
     # Get file from post request and save with random name
     audio_file = request.files['file']
-    filename = ''.join(random.choices(string.ascii_lowercase + string.digits, k=16))
+    filename = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
     audio_file.save(filename)
 
     # Instantiate the classifier service
@@ -43,7 +43,7 @@ def predict():
 
     # Make predictions and convert to JSON format
     predictions = classifier.predict(filename)
-    predictions = json.dumps(predictions, indent=4)
+    predictions = json.dumps(predictions, indent=2, default=str)
 
     # Delete stored file
     os.remove(filename)

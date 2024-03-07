@@ -4,6 +4,7 @@ import json
 import numpy as np
 from tensorflow import keras
 from matplotlib import pyplot as plt
+import librosa as li
 
 # Import module from another folder
 sys.path.insert(0, 'src/features')
@@ -17,7 +18,13 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
 class _Bird_Classifier(object):
     __instance = None
 
-    def __new__(cls, model_path, json_path, sr=16000, window_length=1):
+    def __new__(
+        cls,
+        model_path,
+        json_path='./src/models/label_map.json',
+        sr=16000,
+        window_length=1,
+    ):
         if cls.__instance == None:
             print('\nInitializing instance of Bird Classifier...', end='  ')
             cls.__instance = super(_Bird_Classifier, cls).__new__(cls)
@@ -34,10 +41,6 @@ class _Bird_Classifier(object):
         return cls.__instance
 
     def preprocess(self, audio_sample_path, hp=700, remove_silence=True):
-        # Validate file extension
-        if audio_sample_path.split('.')[-1] not in ['flac', 'wav', 'mp3']:
-            raise ValueError('Invalid file extension!')
-
         # Load audio file
         y, _ = li.load(audio_sample_path, sr=self.sr, mono=True)
         # Apply high-pass filter
@@ -78,7 +81,7 @@ class _Bird_Classifier(object):
                 'label_code': label,
                 'species': label_str,
                 'probability': probability,
-                'time_section': (t0, t1),
+                'time_section': [t0, t1],
             }
             predictions.append(dict)
 
@@ -90,14 +93,19 @@ SAMPLE_RATE = 16000
 WINDOW_LENGTH = 1
 
 TRAINED_MODEL_PATH = './models/00-production_model/production_model.keras'
-AUDIO_FILE_PATH = './src/models/Test file (vanellus chillensis).flac'
+AUDIO_FILE_PATH = './src/test files/antrostomus_rufus.mp3'
 JSON_PATH = './datasets/xeno_canto_birds/mfccs.json'
 
-classifier = _Bird_Classifier(
-    TRAINED_MODEL_PATH,
-    JSON_PATH,
-    sr=SAMPLE_RATE,
-    window_length=WINDOW_LENGTH,
-)
 
-predictions = classifier.predict(AUDIO_FILE_PATH)
+if __name__ == '__main__':
+    classifier = _Bird_Classifier(
+        TRAINED_MODEL_PATH,
+        sr=SAMPLE_RATE,
+        window_length=WINDOW_LENGTH,
+    )
+
+    predictions = classifier.predict(AUDIO_FILE_PATH)
+    # for p in predictions:
+    #     print(p)
+    predictions = json.dumps(predictions, indent=2, default=str)
+    print(predictions)
