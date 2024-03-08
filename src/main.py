@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import random, string, os, json
 from models.bird_classification_service import _Bird_Classifier
+from waitress import serve
 
 # This constants must match the parameter used for preprocessing MFCCs for training
 SAMPLE_RATE = 16000
@@ -9,6 +10,12 @@ WINDOW_LENGTH = 1
 TRAINED_MODEL_PATH = './models/00-production_model/production_model.keras'
 
 app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    print('Server up and running!')
+    return 'Ornithologist index page.'
 
 
 @app.route('/predict', methods=['POST'])
@@ -52,4 +59,8 @@ def predict():
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    prod = True
+    if prod:
+        serve(app, host='0.0.0.0', port='50100', threads=1)
+    else:
+        app.run(debug=False)

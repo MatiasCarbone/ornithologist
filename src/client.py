@@ -1,8 +1,8 @@
 import requests
 import json
 
-# Endpoint url
-URL = 'http://127.0.0.1:5000/predict'
+# Endpoint url. Change to point to corresponding server.
+URL = 'https://ornithologist.onrender.com/predict'
 
 
 # audio file we'd like to send for predicting keyword
