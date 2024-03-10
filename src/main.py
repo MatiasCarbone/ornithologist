@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template
 import random, string, os, json
 from models.bird_classification_service import _Bird_Classifier
+from waitress import serve
 
 # This constants must match the parameter used for preprocessing MFCCs for training
 SAMPLE_RATE = 16000
@@ -68,4 +69,8 @@ def predict():
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    prod = True
+    if prod:
+        serve(app, host='0.0.0.0', port='50100', threads=1)
+    else:
+        app.run(debug=False)
