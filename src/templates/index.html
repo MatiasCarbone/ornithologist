@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ornithologist</title>
+</head>
+
+<body>
+    <h1>Ornithologist</h1>
+    <p>Welcome to Ornithologist. This is an API used to classify audio recording of birds using deep learning.</p>
+    <p>The source code for this project is available on its <a href="https://github.com/MatiasCarbone/ornithologist"
+            target="_blank" rel="noopener noreferrer">GitHub page</a>.&nbsp;</p>
+    <h2>Usage</h2>
+    <h3>Get Categories</h3>
+    <p>The classification model has been trained on 40 species of birds from Argentina. To check the species&nbsp;</p>
+    <p>the model can classify, make a request to <em>/categories.&nbsp;</em>This will return a list of all scientific
+        names.</p>
+    <h3>Make predictions</h3>
+    <p>To make a prediction, send a POST request to <em>/predict&nbsp;</em>with an audio file in a valid &nbsp;format.
+    </p>
+    <p>The server will return a JSON file with multiple predictions, corresponding to slices of the audio file</p>
+    <p>where significant signal was detected. Each prediction will contain the scientific name of the bird, a&nbsp;</p>
+    <p>probability score and a pair of timestamps (start-end), with the following structure:</p>
+    <p>{</p>
+    <p>&nbsp; &nbsp; &nbsp; &apos;label_code&apos;: int</p>
+    <p>&nbsp; &nbsp; &nbsp; &apos;species&apos;: str (scientific name)</p>
+    <p>&nbsp; &nbsp; &nbsp; &apos;probability&apos;: float (0-100)</p>
+    <p>&nbsp; &nbsp; &nbsp; &apos;time_section: (hh:mm:ss.mill, hh:mm:ss.mill)</p>
+    <p>&nbsp; }</p>
+    <h3>Aknowledgements</h3>
+    <p>This project was made using recordings from the <a href="https://xeno-canto.org/" target="_blank"
+            rel="noopener noreferrer">Xeno-Canto</a> wildlife recordings database.</p>
+</body>
+
+</html>

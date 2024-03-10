@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, render_template
 import random, string, os, json
 from models.bird_classification_service import _Bird_Classifier
 
@@ -9,6 +9,22 @@ WINDOW_LENGTH = 1
 TRAINED_MODEL_PATH = './models/00-production_model/production_model.keras'
 
 app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/categories')
+def get_categories():
+    # Instantiate the classifier service
+    classifier = _Bird_Classifier(
+        model_path=TRAINED_MODEL_PATH,
+        sr=SAMPLE_RATE,
+        window_length=WINDOW_LENGTH,
+    )
+    return classifier.get_categories()
 
 
 @app.route('/predict', methods=['POST'])

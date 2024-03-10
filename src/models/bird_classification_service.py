@@ -36,8 +36,6 @@ class _Bird_Classifier(object):
                 data = json.load(j)
                 cls.label_map = data['label_map']
             print('Done!')
-        else:
-            print('Bird Classifier was already initialized!')
         return cls.__instance
 
     def preprocess(self, audio_sample_path, hp=700, remove_silence=True):
